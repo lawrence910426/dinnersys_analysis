@@ -1,53 +1,31 @@
-from fetch_data import *
-from data_structure.order import *
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+from internet_data.fetch_data import *
+from analysis.transfer_matrix import *
+import pandas as pd
+
 
 fetcher = fetch_data("dinnersys", "2rjurrru")
-
 data = get_order(fetcher, "2018/10/17-00:00:00", "2018/10/19-00:00:00")
-dish = get_dish(fetcher)
+matrix = transfer_matrix(data)
+m = matrix.get_matrix("2018/09/01" ,"2018/10/19")
 
-datecount = {}
-for key in data:
-    date = data[key].date
-    date = date.split(" ")[0]
-    did = data[key].dish.id
+opt = np.zeros(m.shape ,dtype=np.float64)
+raw = np.zeros((m.shape[0] ,1) ,dtype=np.float64)
+raw[0 ,0] = 1
 
-    if datecount.setdefault(date) is None:
-        datecount[date] = {}
-        datecount[date]["summa"] = 0
-    if datecount[date].setdefault(did) is None:
-        datecount[date][did] = 0
-    datecount[date][did] += 1
-    datecount[date]["summa"] += 1
+for i in range(m.shape[0]):
+    summa = 0
+    for j in range(m.shape[1]):
+        summa += m[i ,j]
+    if(summa == 0):
+        continue
+    for j in range(m.shape[1]):
+        opt[j ,i] = m[i ,j] / summa
 
-transfer = np.zeros((len(dish), len(dish)) ,dtype=np.float64)
+for i in range(100):
+    raw = opt.dot(raw)
 
-for bkey in dish:
-    before = dish[bkey]
-    for akey in dish:
-        after = dish[akey]
-
-        if datecount["2018-10-18"]["summa"] == 0: # or datecount["2018-10-17"]["summa"] == 0:
-            continue
-        if datecount["2018-10-18"].setdefault(after.id) is None: # or datecount["2018-10-17"].setdefault(before.id) is None:
-            continue
-        
-        # before_p = datecount["2018-10-17"][before.id] / datecount["2018-10-17"]["summa"]
-        after_p = datecount["2018-10-18"][after.id] / datecount["2018-10-18"]["summa"]    
-        transfer[int(bkey) - 1, int(akey) - 1] = after_p
-        
-        # print(before_p ,after_p ,before_p * after_p ,transfer[int(bkey) ,int(akey)] ,bkey ,akey)
-        # os.system("pause")
-
-for bkey in dish:
-    sum = 0
-    for akey in dish:
-        sum += transfer[int(bkey) - 1][int(akey) - 1]
-        print(transfer[int(bkey) - 1][int(akey) - 1])
-    print(sum)
-    os.system("pause")
-    
+print(pd.DataFrame(raw))
