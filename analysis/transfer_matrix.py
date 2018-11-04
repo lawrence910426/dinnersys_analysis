@@ -8,7 +8,7 @@ import numpy as np
 
 class transfer_matrix:
     def __init__(self, orders):
-        self.dishcode = reencode_dish(orders)
+        self.dishcode = reencode_dish()
 
         usercount = {}
         for key in orders:
@@ -22,34 +22,50 @@ class transfer_matrix:
             usercount[uid][datetime].append(row)
         self.usercount = usercount
 
-    def get_matrix(self, start, end):
-        start = parse(start)
-        end = parse(end)
+    def get_matrix(self):
+        matrix = self.get_count()
+        ret = np.zeros(matrix.shape, dtype=np.float)
+        for i in range(matrix.shape[0]):
+            sum = 0
+            for j in range(matrix.shape[1]):
+                sum += matrix[i, j]
 
+            if sum == 0:
+                ret[i, i] = 1       # means this dish would never transfer
+            else:
+                for j in range(matrix.shape[1]):
+                    ret[j, i] = matrix[i, j] / sum
+        return ret
+
+    def get_count(self):
         adapt = self.dishcode
-        summa = np.zeros(
-            (adapt.get_count() + 1, adapt.get_count() + 1), dtype=np.int)
+
+        summa = np.zeros((adapt.get_count(), adapt.get_count()), dtype=np.int)
 
         for uid in self.usercount:
             history = self.usercount[uid]
-            current = start + datetime.timedelta(days=1)
-            last = history.setdefault(str(current.date()))
-            last = [] if last is None else last
 
-            while current != end:
-                data = history.setdefault(str(current.date()))
-                data = [] if data is None else data
+            # make history a sorted list.
+            history = [(history[key]) for key in sorted(history.keys())]
 
-                summa += self.get_count_matrix(last, data)
-
+            last = history[0]
+            for data in history:
+                if(last == data):  # if this is the first run.
+                    continue
+                summa += self.get_user_count(last, data)
                 last = data
-                current += datetime.timedelta(days=1)
         return summa
 
-    def get_count_matrix(self, last, data):
+    def get_user_count(self, last, data):
+
+        # This will return a matrix ,which contains all combinations of last and data
+        # ex. last = {1 ,3} ,data = {2 ,4}
+        # tmp[1 ,2] = tmp[1 ,4] = tmp[3 ,2] = tmp[3 ,4] = 1
+        # return tmp
+
         adapt = self.dishcode
-        count = np.zeros(
-            (adapt.get_count() + 1, adapt.get_count() + 1), dtype=np.int)
+
+        count = np.zeros((adapt.get_count(), adapt.get_count()), dtype=np.int)
         last_ids = []
         data_ids = []
 

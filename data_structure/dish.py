@@ -3,6 +3,7 @@ class dish:
         self.id = kwargs["id"]
         self.name = kwargs["name"]
         self.factory = kwargs["factory"]
+        self.raw = kwargs["raw"]
 
 
 def get_dish(fetcher):
@@ -12,6 +13,7 @@ def get_dish(fetcher):
         ret[row["dish_id"]] = dish(
             id=row["dish_id"],
             name=row["dish_name"],
-            factory=row["factory"]["name"]
+            factory=row["factory"]["name"],
+            raw=row
         )
     return ret
