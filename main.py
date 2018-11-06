@@ -8,8 +8,7 @@ from internet_data.fetch_data import *
 from analysis.analysis import *
 
 
-
-# fetch_data.download("data.pickle")
+fetch_data.download("data.pickle")
 
 data = fetch_data.load("data.pickle" ,"2018-01-01" ,"2018-12-31")
 
