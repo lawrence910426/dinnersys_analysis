@@ -6,7 +6,7 @@ class reencode_dish:
         (re.compile(r"(烏龍)|(麵)|(湯)") ,"湯麵類 Noodles"),
         (re.compile(r"(副菜)|(飯)") ,"便當類 Bang Dang"), 
         (re.compile(r"((餃)|(蔥抓餅)|(鍋貼)|(板條))") ,"小吃類 Snacks"),
-        (re.compile(r"(鍋)") ,"鍋類 Pots")
+        (re.compile(r"(鍋)|(粥)") ,"鍋類 Pots")
     ]
 
     allow_other = False
@@ -24,13 +24,13 @@ class reencode_dish:
         if self.allow_other:
             return len(self.keyword)
         else:
-            raise Exception("Do not allow other.")
+            raise Exception("Do not allow other. " + name)
 
     def get_name(self, id):
         if id == len(self.keyword):
             if self.allow_other:
                 return "其他類"
             else:
-                raise Exception("Do not allow other.")
+                raise Exception("Do not allow other. " + id)
         else:
             return self.keyword[id][1]

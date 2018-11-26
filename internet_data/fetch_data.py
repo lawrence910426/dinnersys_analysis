@@ -5,7 +5,7 @@ import pickle
 from data_structure.order import *
 
 class fetch_data:
-    server_dns = "http://dinnersystem.ddns.net/"
+    server_dns = "http://localhost/"
 
     def __init__(self, account, pswd):
         self.cookie = self.login(account, pswd)
@@ -33,6 +33,7 @@ class fetch_data:
         link = self.server_dns + \
             "dinnersys_beta/backend/backend.php?cmd=select_other&history=true&cafet=true"
         f = requests.get(link, cookies=self.cookie)
+        print(f.text)
         resp = remove_bom(f.text)
         ret = json.loads(resp)
         return ret
