@@ -1,17 +1,16 @@
-from analysis.reencode_dish import *
-from analysis.reencode_date import *
-from analysis.transfer_matrix import *
-from analysis.solve_matrix import *
+from analysis.reencode.reencode_dish import *
+from analysis.reencode.reencode_date import *
+from analysis.matrix import *
+import analysis.linear as lg
 import numpy as np
 
 
 class analysis:
-    def __init__(self, orders):
+    def __init__(self, orders ,style):
         self.data = orders
         self.dish_coder = reencode_dish()
-        self.date_coder = reencode_date(orders)
-        transfer = transfer_matrix(orders)
-        solver = solve_matrix()
+        self.date_coder = reencode_date(orders ,style)
+        transfer ,solver = transfer_matrix(orders ,self.dish_coder) ,solve_matrix()
         self.matrix = transfer.get_count()
         self.balance = solver.solve(transfer.get_matrix())
 
@@ -29,30 +28,21 @@ class analysis:
 
         return result
 
-    def get_class(self, mode):
-        ret = {}
-        for oid in self.data:
-            item = self.data[oid]
-            if ret.setdefault(item.seatno[:3]) is None:
-                ret[item.seatno[:3]] = 0
-            ret[item.seatno[:3]] += 1
+    def get_balance(self ,**kwargs):
+        if not kwargs.setdefault("day_avg") is None:
+            date_count = np.zeros((1, self.date_coder.get_count()), dtype=np.float)
+            for oid in self.data:
+                row = self.data[oid]
+                date_count[0, self.date_coder.get_id(row.date)] += 1
+            result = self.balance.dot(date_count)
 
-        if mode == "percent":
-            for key in ret:
-                ret[key] /= self.get_count()
+        if not kwargs.setdefault("linear") is None:
+            line = kwargs["line"]
+            date_count = np.zeros((1, self.date_coder.get_count()), dtype=np.float)
+            for i in range(self.date_coder.get_count()):
+                date_count[0, i] = line.get(i)
+            result = self.balance.dot(date_count)
 
-        index = [seat for seat in sorted(ret.keys())]
-        value = [ret[seat] for seat in sorted(ret.keys())]
-        return index, value
-
-    def get_balance(self):
-        date_count = np.zeros((1, self.date_coder.get_count()), dtype=np.float)
-
-        for oid in self.data:
-            row = self.data[oid]
-            date_count[0, self.date_coder.get_id(row.date)] += 1
-
-        result = self.balance.dot(date_count)
         ret = np.zeros((result.shape[1] ,result.shape[0]) ,dtype=np.float)
         for i in range(result.shape[0]):
             for j in range(result.shape[1]):
@@ -66,3 +56,7 @@ class analysis:
 
     def get_count_matrix(self):
         return self.matrix
+    
+    @staticmethod
+    def get_linear(data):
+        return lg.linear(data)

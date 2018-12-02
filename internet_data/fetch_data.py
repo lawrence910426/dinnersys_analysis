@@ -5,7 +5,7 @@ import pickle
 from data_structure.order import *
 
 class fetch_data:
-    server_dns = "http://localhost/"
+    server_dns = "http://dinnersystem.ddns.net/"
 
     def __init__(self, account, pswd):
         self.cookie = self.login(account, pswd)
