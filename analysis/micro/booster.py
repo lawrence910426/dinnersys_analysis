@@ -6,19 +6,20 @@ import queue
 class booster:
     # input: neurons ,training parameters
     # output: neurons finished training
-    threads = 300
     param = {
-        "cycles": 1000,
+        "cycles": 10,
         "precision": 0.00001,
-        "alpha": 0.0001,
-        "threads": 3
+        "alpha": 0.1,
+        "threads": 300
     }
 
     def __init__(self, param=None):
         self.task = queue.Queue()
+        t = {}
         for i in range(self.param["threads"]):
-            t = threading.Thread(target=self.run)
-            t.start()
+            t[i] = threading.Thread(target=self.run)
+            t[i].start()
+        self.threads = t
 
     def queue(self, task):
         self.task.put(task)

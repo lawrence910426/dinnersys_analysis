@@ -15,5 +15,5 @@ class date_format(Formatter):
         if ind >= len(self.dates) or ind < 0:
             return ''
         
-        string = self.dates[ind].strftime("%w")
+        string = self.dates[ind].strftime(self.fmt)
         return string

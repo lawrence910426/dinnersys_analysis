@@ -1,5 +1,5 @@
 from analysis.logistic import *
-
+import math
 
 class neuron:
     def __init__(self, params, value, nid=-1):
@@ -12,22 +12,15 @@ class neuron:
         lo = logistic(self.param, self.value)
         lo.train(step=step, cycles=cycle, precision=precision, output=False)
 
-        fails = 0
-        for i in range(len(self.param)):
-            model_v = lo.query(self.param[i])
-            real_v = self.value[i]
-            fails += 1 if (model_v > 0.5 and real_v <
-                           0.5) or (model_v < 0.5 and real_v > 0.5) else 0
-
-        package = {"fails": fails, "samples": len(self.param), "step": step,
+        package = {"cost": lo.cost(), "samples": len(self.param), "step": step,
                    "precision": precision, "cycle": cycle, "function": lo}
         self.model.append(package)
 
     def load(self):
-        idx, mini = 0, self.model[0]["fails"]
+        idx, maxi = 0, self.model[0]["cost"]
         for i in range(len(self.model)):
-            if self.model[i]["fails"] < mini:
-                idx, mini = i, self.model[i]["fails"]
+            if self.model[i]["cost"] > maxi:
+                idx, maxi = i, self.model[i]["cost"]
         self.loaded = self.model[idx]
         self.model = [self.loaded]      # clear junk
         return self.nid

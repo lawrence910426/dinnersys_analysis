@@ -61,6 +61,13 @@ class logistic:
         else:
             return 0
 
+    def cost(self):
+        summa = 0
+        for i in range(len(self.param)):
+            tmp = logistic.sigmoid(self.weight.dot(self.param[i]))
+            summa += self.value[i] * math.log(tmp) + (1 - self.value[i]) * math.log(1 - tmp)
+        return summa
+
     @staticmethod
     def sigmoid(x):
         if x <= -700:

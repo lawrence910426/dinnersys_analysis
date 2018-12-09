@@ -5,7 +5,7 @@ import numpy as np
 
 
 class transfer_matrix:
-    def __init__(self, orders ,dish_code):
+    def __init__(self, orders, dish_code):
         self.dishcode = dish_code
 
         usercount = {}
@@ -85,18 +85,3 @@ class transfer_matrix:
         return count
 
 
-class solve_matrix:
-
-    def solve(self, matrix):
-        for i in range(matrix.shape[0]):
-            matrix[i, i] -= 1
-
-        # remove any line ,because one of them is useless.
-        matrix[matrix.shape[0] - 1, :] = 1
-        
-        inv = np.linalg.inv(matrix)
-
-        target = np.zeros((matrix.shape[0], 1), dtype=np.float)
-        target[matrix.shape[0] - 1, 0] = 1
-
-        return inv.dot(target)
