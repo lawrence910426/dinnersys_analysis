@@ -16,7 +16,6 @@ def category_trend(orders):
 
     for did in dish:
         index = [parse(date[date_id]) for date_id in date]
-
         value = [result[date_id, did] for date_id in date]
 
         balance_value = [balance[date_id, did] for date_id in date]
