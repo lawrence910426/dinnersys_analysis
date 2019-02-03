@@ -33,7 +33,7 @@ class decision:
             value[i] = exists(orders, mini)
             i += 1
             mini += datetime.timedelta(days=1)
-
+        
         self.neuron = neuron(param, value, uid)
         self.exists, self.mini, self.maxi = exists, mini, maxi
 

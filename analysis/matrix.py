@@ -2,6 +2,7 @@ from dateutil.parser import parse
 import datetime
 import os
 import numpy as np
+import pandas as pd
 
 
 class transfer_matrix:
@@ -46,12 +47,16 @@ class transfer_matrix:
             # make history a sorted list.
             history = [(history[key]) for key in sorted(history.keys())]
 
+            user_sum = np.zeros((adapt.get_count(), adapt.get_count()), dtype=np.int)
             last = history[0]
             for data in history:
                 if(last == data):  # if this is the first run.
                     continue
-                summa += self.get_user_count(last, data)
+                user_sum += self.get_user_count(last, data)
                 last = data
+            print(pd.DataFrame(user_sum))
+            os.system("pause")
+            summa += user_sum
         return summa
 
     def get_user_count(self, last, data):
@@ -82,6 +87,7 @@ class transfer_matrix:
         for i in last_ids:
             for j in data_ids:
                 count[i, j] += 1
+        
         return count
 
 

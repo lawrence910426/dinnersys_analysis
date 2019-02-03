@@ -7,7 +7,7 @@ class booster:
     # input: neurons ,training parameters
     # output: neurons finished training
     param = {
-        "cycles": 10,
+        "cycles": 3000,
         "precision": 0.00001,
         "alpha": 0.1,
         "threads": 300

@@ -10,7 +10,7 @@ class neuron:
 
     def build(self, step, cycle, precision):
         lo = logistic(self.param, self.value)
-        lo.train(step=step, cycles=cycle, precision=precision, output=False)
+        lo.train(step=step, cycles=cycle, precision=precision, output=True)
 
         package = {"cost": lo.cost(), "samples": len(self.param), "step": step,
                    "precision": precision, "cycle": cycle, "function": lo}
