@@ -17,16 +17,19 @@ from analysis.logistic import *
 # from analysis.micro.booster import *
 
 param = [
-    [0, 1, 1, 1, 1],
-    [1, 1, 1, 1, 0],
-    [1, 1, 1, 1, 1],
-    [1, 1, 1, 0, 0],
+    [0, 1, 0, 0, 0],
+    [0, 1, 0, 0, 0],
+    [0, 1, 0, 1, 0],
+    [1, 1, 0, 0, 0],
+    [1, 0, 1, 1, 1],
+    [1, 1, 1, 0, 1],
 ]
-value = [1, 0, 1, 0]
-lo = logistic(np.array(param), np.array(value))
-lo.train(precision=1e-9, cycles=1000)
+value = [0, 0, 1, 1, 1, 0]
+lo = logistic(np.array(param, dtype=np.float64),
+              np.array(value, dtype=np.float64))
+lo.train(alpha=8 ,limit=10 ,cycles=10, precision=1e-3)
 print(lo.cost())
-print(lo.query(np.array([1, 1, 1, 1, 1])))
+print(lo.query(np.array([0, 1, 0, 0, 0])))
 
 # fetch_data.download("data_local.pickle")
 # data = fetch_data.load("data_local.pickle", "2018-09-17", "2018-12-06")

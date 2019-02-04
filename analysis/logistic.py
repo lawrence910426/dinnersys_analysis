@@ -10,6 +10,7 @@ class logistic:
         self.u_sigmoid = np.frompyfunc(self.sigmoid, 1, 1)
         self.fprime = lambda x, y, w: x.T.dot(
             y.T - self.u_sigmoid(x.dot(w)).T).T  # fprime = d/dw cost
+        self.deviation = lambda x: sum([i ** 2 for i in x])
         self.trained = False
 
     def psuedo_weight(self, item):
@@ -24,14 +25,16 @@ class logistic:
         return tmp
 
     def train(self, **kwargs):
-        self.step = 1 if kwargs.setdefault("step") is None else kwargs["step"]
-        self.delta = 0.5 if kwargs.setdefault("delta") is None else kwargs["delta"]
-        precision = None if kwargs.setdefault(
-            "precision") is None else kwargs["precision"]
-        cycles = None if kwargs.setdefault(
-            "cycles") is None else kwargs["cycles"]
-        output = True if kwargs.setdefault(
-            "output") is None else kwargs["output"]
+        self.alpha = 64 \
+            if kwargs.setdefault("alpha") is None else kwargs["alpha"]
+        self.limit = 20 \
+            if kwargs.setdefault("limit") is None else kwargs["limit"]
+        precision = None \
+            if kwargs.setdefault("precision") is None else kwargs["precision"]
+        cycles = None \
+            if kwargs.setdefault("cycles") is None else kwargs["cycles"]
+        output = True \
+            if kwargs.setdefault("output") is None else kwargs["output"]
 
         prev = this = np.zeros((len(self.param[0])), dtype=np.float)
         count = 0
@@ -42,8 +45,8 @@ class logistic:
             count += 1
 
             if output:
-                print("normal iterate: ", prev, this, logistic.umax(
-                    prev - this), self.fprime(self.param, self.value, prev), count)
+                print("normal iterate: ", prev, this,
+                      self.fprime(self.param, self.value, this), count)
                 # os.system("pause")
 
             if ((not precision is None) and precision >= logistic.umax(self.fprime(self.param, self.value, this))) \
@@ -54,23 +57,52 @@ class logistic:
         self.trained = True
 
     def udpate(self, prev):
+        # This algorithm is a ternary search. Requires O(log N) time to run
+        # I spent a lot of time on it, fuck you.
+        # ---------------------------------------------------- #
         origin = self.fprime(self.param, self.value, prev)
-        tmp = prev + self.step * origin
+        l = 0
+        r = self.alpha
+        best = r
+        count = 0
+        while count <= self.limit:
+            lmid = (l * 2 + r) / 3
+            rmid = (l + r * 2) / 3
+            lmid_value = self.fprime(self.param, self.value,prev + origin * lmid)
+            rmid_value = self.fprime(self.param, self.value,prev + origin * rmid)
+            if self.deviation(lmid_value) < self.deviation(rmid_value):
+                r = rmid
+                best = lmid
+            if self.deviation(lmid_value) > self.deviation(rmid_value):
+                l = lmid
+                best = rmid
+            if self.deviation(lmid_value) == self.deviation(rmid_value):
+                # This is the limitation of the data type, so we break out.
+                break
+            # print(l, r, lmid ,rmid)
+            # print(lmid_value ,rmid_value ,self.deviation(lmid_value), self.deviation(rmid_value))
+            count += 1
+        print(best)
+        return prev + origin * best
 
-        def greater(a, b):
-            for i in range(a.shape[0]):
-                if abs(a[i]) < abs(b[i]) - self.delta:
-                    return False
-            return True
-
-        while not greater(origin, self.fprime(self.param, self.value, tmp)):
-            self.step *= self.delta
-            tmp = prev + self.step * origin
-            print("udpate alpha: ", self.step,
-                  prev, origin,
-                  tmp, self.fprime(self.param, self.value, tmp))
-            os.system("pause")
-        return tmp
+        # This shit is working ,please don't modify this.
+        # This algorithm runs in a O(N) time
+        # self.alpha should be an list which size is N and contains all the possible step.
+        # ---------------------------------------------------------- #
+        # origin = self.fprime(self.param, self.value, prev)
+        # best = 0
+        # best_v = self.deviation(self.fprime(
+        #     self.param, self.value, prev + origin * self.alpha[0]))
+        # for i in range(len(self.alpha)):
+        #     value = self.deviation(self.fprime(
+        #         self.param, self.value, prev + origin * self.alpha[i]))
+        #     print(i, self.fprime(self.param, self.value,
+        #                          prev + origin * self.alpha[i]), value)
+        #     if best_v > value:
+        #         best = i
+        #         best_v = value
+        # print(best, self.alpha[best])
+        # return prev + origin * self.alpha[best]
 
     def query(self, value, **kwargs):
         if self.trained:
@@ -83,8 +115,10 @@ class logistic:
         summa = 0
         for i in range(len(self.param)):
             tmp = logistic.sigmoid(self.weight.dot(self.param[i]))
-            summa += self.value[i] * math.log(tmp) + (1 - self.value[i]) * \
-                math.log(1 - tmp)
+            if self.value[i] == 0:
+                summa += 0 if tmp == 1 else math.log(1 - tmp)
+            if self.value[i] == 1:
+                summa += 0 if tmp == 0 else math.log(tmp)
         return summa
 
     @staticmethod
