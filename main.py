@@ -17,18 +17,32 @@ from analysis.logistic import *
 # from analysis.micro.booster import *
 
 param = [
-    [0, 1, 0, 0, 0],
-    [0, 1, 0, 0, 0],
-    [0, 1, 0, 1, 0],
-    [1, 1, 0, 0, 0],
-    [1, 0, 1, 1, 1],
-    [1, 1, 1, 0, 1],
+    [-1, 1, -1, -1, -1],
+    [-1, 1, -1, -1, -1],
+    [-1, 1, -1, 1, -1],
+    [1, 1, -1, -1, -1],
+    [1, -1, 1, 1, 1],
+    [1, 1, 1, -1, 1],
 ]
 value = [0, 0, 1, 1, 1, 0]
 lo = logistic(np.array(param, dtype=np.float64),
               np.array(value, dtype=np.float64))
-lo.train(alpha=8 ,limit=10 ,cycles=10, precision=1e-3)
-print(lo.cost())
+lo.train(alpha=2 ,limit=10 ,cycles=30)
+
+fig, ax = plt.subplots()
+
+mini = min(lo.log["gradient"])
+maxi = max(lo.log["gradient"])
+plt.xticks(np.arange(mini, maxi + 1, (maxi - mini) / len(lo.log["gradient"])))
+
+# plt.bar(lo.log["gradient"], lo.log["cost"]         ,label="cost_function")
+plt.plot(lo.log["gradient"], lo.log["cost"]         ,label="cost_function")
+# plt.bar(lo.log["gradient"], lo.log["deviation"]    ,label="deviation")
+plt.plot(lo.log["gradient"], lo.log["deviation"]         ,label="deviation")
+
+plt.legend()
+plt.show()
+
 print(lo.query(np.array([0, 1, 0, 0, 0])))
 
 # fetch_data.download("data_local.pickle")

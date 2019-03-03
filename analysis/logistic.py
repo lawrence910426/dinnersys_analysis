@@ -1,6 +1,7 @@
 import numpy as np
 import math as math
 import os
+import pandas as pd
 
 
 class logistic:
@@ -12,6 +13,7 @@ class logistic:
             y.T - self.u_sigmoid(x.dot(w)).T).T  # fprime = d/dw cost
         self.deviation = lambda x: sum([i ** 2 for i in x])
         self.trained = False
+        self.log = {"cost": [], "deviation": [], "gradient": []}
 
     def psuedo_weight(self, item):
         if len(item.shape) == 2:    # the exam set
@@ -25,8 +27,10 @@ class logistic:
         return tmp
 
     def train(self, **kwargs):
-        self.alpha = 64 \
+        self.alpha = 2 \
             if kwargs.setdefault("alpha") is None else kwargs["alpha"]
+        self.beta = 0.1 \
+            if kwargs.setdefault("beta") is None else kwargs["beta"]
         self.limit = 20 \
             if kwargs.setdefault("limit") is None else kwargs["limit"]
         precision = None \
@@ -40,14 +44,15 @@ class logistic:
         count = 0
 
         while True:
+            if output:
+                self.weight = this
+                self.log["cost"].append(self.cost())
+                self.log["deviation"].append(self.deviation(self.fprime(self.param ,self.value ,this)))
+                self.log["gradient"].append(3 * count * self.limit)
+            
             prev = this
             this = self.udpate(prev)
             count += 1
-
-            if output:
-                print("normal iterate: ", prev, this,
-                      self.fprime(self.param, self.value, this), count)
-                # os.system("pause")
 
             if ((not precision is None) and precision >= logistic.umax(self.fprime(self.param, self.value, this))) \
                     or ((not cycles is None) and count >= cycles):
@@ -68,8 +73,10 @@ class logistic:
         while count <= self.limit:
             lmid = (l * 2 + r) / 3
             rmid = (l + r * 2) / 3
-            lmid_value = self.fprime(self.param, self.value,prev + origin * lmid)
-            rmid_value = self.fprime(self.param, self.value,prev + origin * rmid)
+            lmid_value = self.fprime(
+                self.param, self.value, prev + origin * lmid)
+            rmid_value = self.fprime(
+                self.param, self.value, prev + origin * rmid)
             if self.deviation(lmid_value) < self.deviation(rmid_value):
                 r = rmid
                 best = lmid
@@ -82,11 +89,10 @@ class logistic:
             # print(l, r, lmid ,rmid)
             # print(lmid_value ,rmid_value ,self.deviation(lmid_value), self.deviation(rmid_value))
             count += 1
-        print(best)
         return prev + origin * best
 
         # This shit is working ,please don't modify this.
-        # This algorithm runs in a O(N) time
+        # This algorithm runs in a O(N) complexity
         # self.alpha should be an list which size is N and contains all the possible step.
         # ---------------------------------------------------------- #
         # origin = self.fprime(self.param, self.value, prev)
