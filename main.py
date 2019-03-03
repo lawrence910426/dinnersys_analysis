@@ -12,7 +12,7 @@ from output.category_trend import *
 from output.amount_figure import *
 from output.prediction import *
 
-from analysis.logistic import *
+from analysis.logistic.logistic import *
 # from analysis.micro.decision import *
 # from analysis.micro.booster import *
 
@@ -25,25 +25,49 @@ param = [
     [1, 1, 1, -1, 1],
 ]
 value = [0, 0, 1, 1, 1, 0]
+
+data = dict()
+
+############################################################################################
 lo = logistic(np.array(param, dtype=np.float64),
               np.array(value, dtype=np.float64))
-lo.train(alpha=2 ,limit=10 ,cycles=30)
+lo.train(alpha=0.002 ,cycles=500 ,function="train_raw")
+data["R_C"] = lo.cost()
+data["R"] = lo.log
+
+lo = logistic(np.array(param, dtype=np.float64),
+              np.array(value, dtype=np.float64))
+lo.train(alpha=0.002 ,beta=0.5 ,cycles=500 ,function="train_momentum")
+data["M_C"] = lo.cost()
+data["M"] = lo.log
+
+lo = logistic(np.array(param, dtype=np.float64),
+              np.array(value, dtype=np.float64))
+lo.train(alpha=8 ,limit=20 ,cycles=10 ,function="train_ternary")
+data["T_C"] = lo.cost()
+data["T"] = lo.log
+
+lo = logistic(np.array(param, dtype=np.float64),
+              np.array(value, dtype=np.float64))
+lo.train(alpha=8 ,beta=0.1 ,limit=20 ,cycles=10 ,function="train_ternary_momentum")
+data["TM_C"] = lo.cost()
+data["TM"] = lo.log
+############################################################################################
 
 fig, ax = plt.subplots()
 
-mini = min(lo.log["gradient"])
-maxi = max(lo.log["gradient"])
-plt.xticks(np.arange(mini, maxi + 1, (maxi - mini) / len(lo.log["gradient"])))
+plt.xticks(np.arange(0, 3000, 100))
+plt.xlabel('Partial differential executed times')
+plt.ylabel('Cost function value')
 
-# plt.bar(lo.log["gradient"], lo.log["cost"]         ,label="cost_function")
-plt.plot(lo.log["gradient"], lo.log["cost"]         ,label="cost_function")
-# plt.bar(lo.log["gradient"], lo.log["deviation"]    ,label="deviation")
-plt.plot(lo.log["gradient"], lo.log["deviation"]         ,label="deviation")
+plt.plot(data["R"]["gradient"], data["R"]["cost"] ,label=u"Raw Gradient")
+plt.plot(data["M"]["gradient"], data["M"]["cost"] ,label=u"Momentum")
+plt.plot(data["T"]["gradient"], data["T"]["cost"] ,label=u"Ternary")
+plt.plot(data["TM"]["gradient"], data["TM"]["cost"] ,label=u"Ternary + Momentum")
 
 plt.legend()
 plt.show()
 
-print(lo.query(np.array([0, 1, 0, 0, 0])))
 
 # fetch_data.download("data_local.pickle")
 # data = fetch_data.load("data_local.pickle", "2018-09-17", "2018-12-06")
