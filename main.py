@@ -31,15 +31,27 @@ data = dict()
 ############################################################################################
 lo = logistic(np.array(param, dtype=np.float64),
               np.array(value, dtype=np.float64))
-lo.train(alpha=0.002 ,cycles=500 ,function="train_raw")
+lo.train(alpha=0.001 ,cycles=550 ,function="train_raw")
 data["R_C"] = lo.cost()
 data["R"] = lo.log
 
 lo = logistic(np.array(param, dtype=np.float64),
               np.array(value, dtype=np.float64))
-lo.train(alpha=0.002 ,beta=0.5 ,cycles=500 ,function="train_momentum")
+lo.train(alpha=0.001 ,beta=0.5 ,cycles=550 ,function="train_momentum")
 data["M_C"] = lo.cost()
 data["M"] = lo.log
+
+lo = logistic(np.array(param, dtype=np.float64),
+              np.array(value, dtype=np.float64))
+lo.train(alpha=2 ,cycles=600 ,function="train_raw")
+data["OR_C"] = lo.cost()
+data["OR"] = lo.log
+
+lo = logistic(np.array(param, dtype=np.float64),
+              np.array(value, dtype=np.float64))
+lo.train(alpha=2 ,beta=0.5 ,cycles=500 ,function="train_momentum")
+data["OM_C"] = lo.cost()
+data["OM"] = lo.log
 
 lo = logistic(np.array(param, dtype=np.float64),
               np.array(value, dtype=np.float64))
@@ -62,6 +74,8 @@ plt.ylabel('Cost function value')
 
 plt.plot(data["R"]["gradient"], data["R"]["cost"] ,label=u"Raw Gradient")
 plt.plot(data["M"]["gradient"], data["M"]["cost"] ,label=u"Momentum")
+# plt.plot(data["R"]["gradient"], data["OR"]["cost"] ,label=u"Raw Gradient Oversize")
+# plt.plot(data["M"]["gradient"], data["OM"]["cost"] ,label=u"Momentum Oversize")
 plt.plot(data["T"]["gradient"], data["T"]["cost"] ,label=u"Ternary")
 plt.plot(data["TM"]["gradient"], data["TM"]["cost"] ,label=u"Ternary + Momentum")
 
