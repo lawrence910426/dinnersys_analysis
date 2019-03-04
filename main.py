@@ -69,8 +69,8 @@ data["TM"] = lo.log
 fig, ax = plt.subplots()
 
 plt.xticks(np.arange(0, 3000, 100))
-plt.xlabel('Partial differential executed times')
-plt.ylabel('Cost function value')
+plt.xlabel('Partial differential executed times' ,fontsize=15)
+plt.ylabel('Cost function value' ,fontsize=15)
 
 plt.plot(data["R"]["gradient"], data["R"]["cost"] ,label=u"Raw Gradient")
 plt.plot(data["M"]["gradient"], data["M"]["cost"] ,label=u"Momentum")
@@ -79,7 +79,7 @@ plt.plot(data["M"]["gradient"], data["M"]["cost"] ,label=u"Momentum")
 plt.plot(data["T"]["gradient"], data["T"]["cost"] ,label=u"Ternary")
 plt.plot(data["TM"]["gradient"], data["TM"]["cost"] ,label=u"Ternary + Momentum")
 
-plt.legend()
+plt.legend(prop={'size': 20})
 plt.show()
 
 
