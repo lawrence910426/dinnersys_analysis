@@ -27,15 +27,15 @@ class amount:
         self.decision, self.boost, self.array = {}, boost, array
         self.array, self.undone = array, 0
 
-    def train(self, callback):
+    def train(self, start ,end, callback):
         self.callback = callback
         self.undone = len(self.array)
+        self.date = end
         for uid in self.array:
             if len(self.array[uid]) < self.length:
                 self.undone -= 1
                 continue
-
-            self.decision[uid] = decision(self.array[uid], self.length, uid)
+            self.decision[uid] = decision(self.array[uid], start ,end, uid)
             self.decision[uid].train(self.boost, self.done)
 
     def done(self, uid):
@@ -50,7 +50,7 @@ class amount:
 
         i = 0
         for uid in self.decision:
-            p = self.decision[uid].get()
+            p = self.decision[uid].get(self.date)
 
             for j in range(i + 1):
                 rate[j] += prev[j] * (1 - p)

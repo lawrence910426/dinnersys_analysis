@@ -54,8 +54,8 @@ class transfer_matrix:
                     continue
                 user_sum += self.get_user_count(last, data)
                 last = data
-            print(pd.DataFrame(user_sum))
-            os.system("pause")
+            # print(pd.DataFrame(user_sum))
+            # os.system("pause")
             summa += user_sum
         return summa
 

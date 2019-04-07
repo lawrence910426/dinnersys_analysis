@@ -1,5 +1,6 @@
-from analysis.logistic import *
+from analysis.logistic.logistic import *
 import math
+import os
 
 class neuron:
     def __init__(self, params, value, nid=-1):
@@ -10,10 +11,10 @@ class neuron:
 
     def build(self, step, cycle, precision):
         lo = logistic(self.param, self.value)
-        lo.train(step=step, cycles=cycle, precision=precision, output=True)
+        lo.train(cycles=50 ,function="train_momentum" ,output=True)
 
         package = {"cost": lo.cost(), "samples": len(self.param), "step": step,
-                   "precision": precision, "cycle": cycle, "function": lo}
+                 "precision": precision, "cycle": cycle, "function": lo}
         self.model.append(package)
 
     def load(self):
@@ -26,4 +27,5 @@ class neuron:
         return self.nid
 
     def get(self, param):
+        # print(self.param, self.value ,self.loaded["function"].weight ,param ,self.loaded["function"].cost() ,self.loaded["function"].query(param))
         return self.loaded["function"].query(param)

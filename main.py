@@ -7,7 +7,7 @@ import pickle
 
 from internet_data.fetch_data import *
 
-from output.sum_trend import *
+from experiment.sum_trend import *
 from output.category_trend import *
 from output.amount_figure import *
 from output.prediction import *
@@ -83,26 +83,26 @@ from analysis.logistic.logistic import *
 # plt.show()
 
 
-fetch_data.download("data_local.pickle")
-data = fetch_data.load("data_local.pickle", "2018-09-17", "2018-12-06")
-analysiser = analysis(data, "exists")
+# fetch_data.download("data_local.pickle")
+# data = fetch_data.load("data_local.pickle", "2018-09-01", "2018-11-29")
+amount_figure("2018-09-17", "2019-01-31" ,60)
+# analysiser = analysis(data, "exists")
 
-def callback(uid):
-    print(decision.get())
-    print(decision.neuron.loaded)
-    print(decision.neuron.loaded["function"].weight)
+# def callback(uid):
+#     print("done training")
 
-booster = booster()
-tmp = {
-    "2018-09-01" :True,
-    "2018-09-02" :None,
-    "2018-09-03" :None,
-    "2018-09-04" :True,
-    "2018-09-05" :None,
-    "2018-09-06" :None,
-    "2018-09-07" :True,
-    "2018-09-08" :None,
-    "2018-09-09" :None
-}
-decision = decision(tmp ,3 ,1)
-decision.train(booster ,callback)
+# booster = booster()
+# tmp = {
+#     "2018-09-01" :True,
+#     "2018-09-02" :None,
+#     "2018-09-03" :None,
+#     "2018-09-04" :True,
+#     "2018-09-05" :None,
+#     "2018-09-06" :None,
+#     "2018-09-07" :True,
+#     "2018-09-08" :None,
+#     "2018-09-09" :None
+# }
+# decision = decision(tmp ,3 ,1)
+# decision.train(booster ,callback)
+

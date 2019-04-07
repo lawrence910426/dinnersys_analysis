@@ -10,13 +10,13 @@ class logistic(train):
         self.param = self.psuedo_weight(param)
         self.value = value
         self.u_sigmoid = np.frompyfunc(self.sigmoid, 1, 1)
-        self.fprime = lambda x, y, w: x.T.dot(
-            y.T - self.u_sigmoid(x.dot(w)).T).T  # fprime = d/dw cost
+        self.fprime = lambda x, y, w: x.T.dot((y.T - self.u_sigmoid(x.dot(w))).T).T[0]  # fprime = d/dw cost
         self.deviation = lambda x: sum([i ** 2 for i in x])
         self.trained = False
         self.log = {"cost": [], "deviation": [], "gradient": []}
 
     def psuedo_weight(self, item):
+        return item
         if len(item.shape) == 2:    # the exam set
             tmp = np.zeros((item.shape[0], item.shape[1] + 1))
             tmp[:, :-1] = item
@@ -28,11 +28,11 @@ class logistic(train):
         return tmp
 
     def train(self, **kwargs):
-        self.alpha = 2 \
+        self.alpha = 0.1 \
             if kwargs.setdefault("alpha") is None else kwargs["alpha"]
         self.beta = 0.9 \
             if kwargs.setdefault("beta") is None else kwargs["beta"]
-        self.limit = 20 \
+        self.limit = 25 \
             if kwargs.setdefault("limit") is None else kwargs["limit"]
         precision = None \
             if kwargs.setdefault("precision") is None else kwargs["precision"]
@@ -46,7 +46,7 @@ class logistic(train):
         getattr(self, function)(precision ,cycles ,output)
         self.trained = True
 
-    def query(self, value, **kwargs):
+    def query(self, value):
         if self.trained:
             tmp = self.weight.dot(self.psuedo_weight(value))
             return self.sigmoid(tmp)
@@ -68,12 +68,3 @@ class logistic(train):
         if x <= -700:
             return 1
         return 1 / (1 + math.exp(-x))
-
-    @staticmethod
-    def umax(x):    # recursively get the maximum of a ndarray
-        if isinstance(x, np.float64) or isinstance(x, float):
-            return abs(x)
-        maxi = logistic.umax(x[0])
-        for i in range(x.shape[0]):
-            maxi = logistic.umax(x[i])
-        return maxi

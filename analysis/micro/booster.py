@@ -10,7 +10,7 @@ class booster:
         "cycles": 3000,
         "precision": 0.00001,
         "alpha": 0.1,
-        "threads": 300
+        "threads": 30
     }
 
     def __init__(self, param=None):

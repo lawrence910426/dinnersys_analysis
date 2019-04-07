@@ -9,18 +9,20 @@ class train:
         this = np.zeros((len(self.param[0])), dtype=np.float)
         count = 0
         while True:
+           
             if output:
                 self.weight = this
                 self.log["cost"].append(self.cost())
                 self.log["deviation"].append(self.deviation(
                     self.fprime(self.param, self.value, this)))
                 self.log["gradient"].append(count)
-
+            
             slope = self.fprime(self.param, self.value, this)
             this = this + slope * self.alpha
-            count += 1
 
-            if ((not precision is None) and precision >= logistic.umax(self.fprime(self.param, self.value, this))) \
+            count += 1
+            
+            if ((not precision is None) and precision >= train.umax(self.fprime(self.param, self.value, this))) \
                     or ((not cycles is None) and count >= cycles):
                 break
         self.weight = this
@@ -39,7 +41,7 @@ class train:
             this = this + self.ternary(this)
             count += 1
 
-            if ((not precision is None) and precision >= logistic.umax(self.fprime(self.param, self.value, this))) \
+            if ((not precision is None) and precision >= train.umax(self.fprime(self.param, self.value, this))) \
                     or ((not cycles is None) and count >= cycles):
                 break
         self.weight = this
@@ -62,7 +64,7 @@ class train:
 
             count += 1
 
-            if ((not precision is None) and precision >= logistic.umax(self.fprime(self.param, self.value, this))) \
+            if ((not precision is None) and precision >= train.umax(self.fprime(self.param, self.value, this))) \
                     or ((not cycles is None) and count >= cycles):
                 break
         self.weight = this
@@ -83,7 +85,7 @@ class train:
             prev = tmp
             count += 1
 
-            if ((not precision is None) and precision >= logistic.umax(self.fprime(self.param, self.value, this))) \
+            if ((not precision is None) and precision >= train.umax(self.fprime(self.param, self.value, this))) \
                     or ((not cycles is None) and count >= cycles):
                 break
         self.weight = this
@@ -136,3 +138,12 @@ class train:
         #         best_v = value
         # print(best, self.alpha[best])
         # return prev + origin * self.alpha[best]
+    
+    @staticmethod
+    def umax(x):    # recursively get the maximum of a ndarray
+        if isinstance(x, np.float64) or isinstance(x, float):
+            return abs(x)
+        maxi = train.umax(x[0])
+        for i in range(x.shape[0]):
+            maxi = train.umax(x[i])
+        return maxi

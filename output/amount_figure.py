@@ -2,34 +2,60 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+import threading
 from output.date_formatter import date_format
 from dateutil.parser import parse
 from analysis.analysis import *
+from internet_data.fetch_data import *
+import json
 
 
-def amount_figure(data):
-    analysiser = analysis(data, "exists")
-    result = analysiser.get_amount_result()
-    length = len(result)
+def amount_figure(start, end, duration):
+    real, model = [], {}
 
-    summa, center, maxi, dist = 0, 0, 0, 0
-    for i in range(length):
-        if maxi < result[i]:
-            center, maxi = i, result[i]
+    data = fetch_data.load(
+        "D:\\github\\dinnersys_analysis\\data_local.pickle", start, end)
+    analysiser = analysis(data, "weekdays")
+    result = analysiser.get_dish_date()
+    date, dish = analysiser.get_decoders()
+    real = result.dot(np.array([1 for i in range(len(dish))]))
+
+    def run(date):
+        psuedo_start = (date -
+                        datetime.timedelta(days=duration)).strftime("%Y-%m-%d")
+        psuedo_end = date.strftime("%Y-%m-%d")
+        data = fetch_data.load("data_local.pickle", psuedo_start, psuedo_end)
+        analysiser = analysis(data, "weekdays")
+        analysiser.init_amount(date - datetime.timedelta(days=duration),
+                               date + datetime.timedelta(days=1))
+        model[date + datetime.timedelta(days=1)] = analysiser.get_amount()
+        print(date)
+
+    threads = []
+    start, end = parse(start), parse(end)
+    real_start = start
+    start += datetime.timedelta(days=duration)
+    while start <= end:
+        run(start)
+        start += datetime.timedelta(days=1)
+
+    with open('model.json', 'w') as the_file:
+        for i in range(len(date)):
+            if i > duration:
+                the_file.write(date[i] + "\t" +
+                               str(real[i]) + "\t" +
+                               str(model[real_start + datetime.timedelta(days=i)]) +
+                               '\n')
+            else:
+                the_file.write(date[i] + "\t" + str(real[i]) + '\n')
     
-    while summa < 0.68:
-        summa += result[center + dist] + result[center - dist]
-        dist += 1
-
-    plt.bar(range(length), [result[i] for i in range(length)])
+    formatter = date_format([parse(date[i]) for i in date])
+    fig, ax = plt.subplots()
+    ax.xaxis.set_major_formatter(formatter)
+    # plt.xticks(np.arange(0 ,dates ,1))
+    plt.bar(range(len(date)), real)
+    plt.plot(range(duration + 1, len(date) + 1),
+             [model[real_start + datetime.timedelta(days=i)]
+              for i in range(duration + 1, len(date) + 1)],
+             'C1', label=u'Model', marker='o')
     plt.show()
-
-    while summa < 0.95:
-        plt.bar(range(length), [result[i] for i in range(length)])
-        for i in range(center - dist ,center + dist):
-            plt.bar(i, result[i], color='red', edgecolor='red')
-        plt.title("Distance: " + str(dist) + ",Rate: " + str(summa * 100) + "%")
-        plt.show()
-
-        summa += result[center + dist] + result[center - dist]
-        dist += 1

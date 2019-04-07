@@ -8,7 +8,7 @@ class regex_dish:
         (re.compile(r"((餃)|(蔥抓餅)|(鍋貼)|(板條)|(粄條))") ,"小吃類 Snacks"),
         (re.compile(r"(鍋)|(粥)") ,"鍋類 Pots")
     ]
-    allow_other = False
+    allow_other = True
 
     def __init__(self ,regex=None):
         self.keyword = (self.keyword if regex is None else regex)

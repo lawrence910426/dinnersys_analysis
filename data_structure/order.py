@@ -22,12 +22,14 @@ class order:
         data = fetcher.get_orders()
         ret = {}
         for row in data:
+            if row["money"]["payment"][0]["paid"] == "false":
+                continue
             ret[row["id"]] = order(
                 id=row["id"],
                 dish=dish(
-                    id=row["dish"]["dish_id"],
-                    name=row["dish"]["dish_name"],
-                    factory=row["dish"]["department"]["factory"]["name"],
+                    id=row["dish"][0]["dish_id"],
+                    name=row["dish"][0]["dish_name"],
+                    factory=row["dish"][0]["department"]["factory"]["name"],
                     raw=row["dish"]
                 ),
                 date=row["recv_date"].split(" ")[0],

@@ -5,7 +5,7 @@ class reencode_date:
     def __init__(self, orders ,style):
         date_idx = {}
         for oid in orders:
-            date = orders[oid].date[5:]
+            date = orders[oid].date
             date_idx[date] = True
         
         if style == "exists":
@@ -30,7 +30,7 @@ class reencode_date:
 
         count ,i = 0 ,mini
         while i <= maxi:
-            tmp[i.strftime("%m-%d")] = count
+            tmp[i.strftime("%Y-%m-%d")] = count
             count += 1
             i += datetime.timedelta(days=1)
         
@@ -41,7 +41,7 @@ class reencode_date:
         return len(self.encoder)
 
     def get_id(self, date):
-        return self.encoder.setdefault(date[5:])
+        return self.encoder.setdefault(date)
 
     def get_name(self, id):
         return self.decoder.setdefault(id)
