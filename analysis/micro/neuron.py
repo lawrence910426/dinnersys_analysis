@@ -2,6 +2,7 @@ from analysis.logistic.logistic import *
 import math
 import os
 
+
 class neuron:
     def __init__(self, params, value, nid=-1):
         self.model = []
@@ -9,12 +10,13 @@ class neuron:
         self.value = value
         self.nid = nid
 
-    def build(self, step, cycle, precision):
+    def build(self, limit, cycle):
         lo = logistic(self.param, self.value)
-        lo.train(cycles=50 ,function="train_momentum" ,output=True)
+        lo.train(limit=limit, cycles=cycle,
+                 function="train_ternary_momentum", output=True)
 
-        package = {"cost": lo.cost(), "samples": len(self.param), "step": step,
-                 "precision": precision, "cycle": cycle, "function": lo}
+        package = {"cost": lo.cost(), "samples": len(self.param),
+                   "cycle": cycle, "function": lo}
         self.model.append(package)
 
     def load(self):

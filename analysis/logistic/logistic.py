@@ -10,10 +10,16 @@ class logistic(train):
         self.param = self.psuedo_weight(param)
         self.value = value
         self.u_sigmoid = np.frompyfunc(self.sigmoid, 1, 1)
-        self.fprime = lambda x, y, w: x.T.dot((y.T - self.u_sigmoid(x.dot(w))).T).T[0]  # fprime = d/dw cost
         self.deviation = lambda x: sum([i ** 2 for i in x])
         self.trained = False
         self.log = {"cost": [], "deviation": [], "gradient": []}
+
+    def fprime(self ,x ,y ,w): # fprime = d/dw cost
+        row_vector_w = w.reshape((self.param.shape[1], 1))
+        dotted = x.dot(row_vector_w)
+        sigmoided = self.u_sigmoid(dotted)
+        row_vector_y = y.reshape((self.param.shape[0], 1))
+        return x.T.dot(row_vector_y - sigmoided).T[0]
 
     def psuedo_weight(self, item):
         return item

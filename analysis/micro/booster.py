@@ -7,9 +7,8 @@ class booster:
     # input: neurons ,training parameters
     # output: neurons finished training
     param = {
-        "cycles": 3000,
-        "precision": 0.00001,
-        "alpha": 0.1,
+        "cycles": 10,
+        "limit": 10,
         "threads": 30
     }
 
@@ -30,8 +29,7 @@ class booster:
                 time.sleep(3)
             task = self.task.get()
 
-            task[0].build(self.param["alpha"],
-                          self.param["cycles"],
-                          self.param["precision"])
+            task[0].build(self.param["limit"],
+                          self.param["cycles"])
             nid = task[0].load()
             task[1](nid)
