@@ -9,7 +9,7 @@ class booster:
     param = {
         "cycles": 10,
         "limit": 10,
-        "threads": 30
+        "threads": 100
     }
 
     def __init__(self, param=None):
