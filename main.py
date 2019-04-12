@@ -15,7 +15,7 @@ from output.prediction import *
 
 from analysis.logistic.logistic import *
 
-amount_figure("2018-09-17", "2019-01-31" ,30)
+amount_figure("2018-09-17", "2018-10-20" ,30 ,"data_local.pickle")
 # algorithm_compare()
 
 # fetch_data.download("data_local.pickle")
