@@ -35,17 +35,18 @@ def amount_figure(start, end, duration, location):
     while start <= end:
         run(start)
         start += datetime.timedelta(days=1)
-        print(start ,model[start])
+        print(start, model[start])
 
-    with open(real_start.strftime("%Y-%m-%d") + '_' +
+    with open("experiment_output\\" +
+              real_start.strftime("%Y-%m-%d") + '_' +
               end.strftime("%Y-%m-%d") + '_' +
               str(duration) + '.csv', 'a') as the_file:
         for i in range(len(date) + 1):
             r = real[i] if i in real else '-'
-            m = model[real_start + datetime.timedelta(days=i)] if real_start + datetime.timedelta(days=i) in model else '-' 
+            m = model[real_start + datetime.timedelta(
+                days=i)] if real_start + datetime.timedelta(days=i) in model else '-'
             d = date[i] if i in date else '-'
             the_file.write(d + "," + str(r) + "," + str(m) + '\n')
-            
 
     formatter = date_format([parse(date[i]) for i in date])
     fig, ax = plt.subplots()
