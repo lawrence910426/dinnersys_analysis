@@ -60,3 +60,7 @@ class fetch_data:
         with open(route, 'rb') as f:
             data = pickle.load(f)
             return order.select_order(data, start, end)
+
+    @staticmethod
+    def get(data, start, end):
+        return order.select_order(data, start, end)
