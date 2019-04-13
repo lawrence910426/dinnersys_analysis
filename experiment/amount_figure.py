@@ -13,7 +13,9 @@ import json
 def amount_figure(start, end, duration, location):
     real, model = [], {}
 
-    data = fetch_data.load(location, start, end)
+    data_all = fetch_data.load(location, '2000-01-01', '9999-12-01')
+
+    data = fetch_data.get(data_all ,start ,end)
     analysiser = analysis(data, "weekdays")
     result = analysiser.get_dish_date()
     date, dish = analysiser.get_decoders()
@@ -23,7 +25,7 @@ def amount_figure(start, end, duration, location):
         psuedo_start = (date -
                         datetime.timedelta(days=duration)).strftime("%Y-%m-%d")
         psuedo_end = date.strftime("%Y-%m-%d")
-        data = fetch_data.load(location, psuedo_start, psuedo_end)
+        data = fetch_data.get(data_all ,psuedo_start ,psuedo_end)
         analysiser = analysis(data, "weekdays")
         analysiser.init_amount(date - datetime.timedelta(days=duration),
                                date + datetime.timedelta(days=1))
