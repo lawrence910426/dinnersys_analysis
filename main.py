@@ -40,4 +40,3 @@ amount_figure("2018-09-20", "2019-01-20" ,60 ,"data_local.pickle")
 # }
 # decision = decision(tmp ,3 ,1)
 # decision.train(booster ,callback)
-
