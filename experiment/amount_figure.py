@@ -37,7 +37,7 @@ def amount_figure(start, end, duration, location):
     while start <= end:
         run(start)
         start += datetime.timedelta(days=1)
-        print(start, model[start])
+        print(start, model[start] ,datetime.datetime.now())
 
     with open("experiment_output\\" +
               real_start.strftime("%Y-%m-%d") + '_' +
