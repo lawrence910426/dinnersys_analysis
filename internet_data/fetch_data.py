@@ -15,16 +15,7 @@ class fetch_data:
         self.cookie = self.login()
 
     def login(self):
-        now = str(int(time.time()))
-        login = {
-            "id": "dinnersys",
-            "password": "2rjurrru",
-            "time": now
-        }
-        data = json.dumps(login).replace(" ", "").encode('ascii')
-        hashed = hashlib.sha512(data).hexdigest()
-        link = self.server_dns + "dinnersys_beta/backend/backend.php?cmd=login&id=dinnersys" + \
-            "&hash=" + hashed + "&time=" + now
+        link = self.server_dns + "dinnersys_beta/backend/backend.php?cmd=login&id=dinnersys&password=2rjurrru&device_id=analysiser"
         
         session = requests.Session()
         resp = session.get(link)
