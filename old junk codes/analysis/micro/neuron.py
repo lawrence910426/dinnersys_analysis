@@ -13,7 +13,7 @@ class neuron:
     def build(self, limit, cycle):
         lo = logistic(self.param, self.value)
         lo.train(limit=limit, cycles=cycle,
-                 function="train_ternary_momentum", output=True)
+                 function="train_ternary", output=True)
 
         package = {"cost": lo.cost(), "samples": len(self.param),
                    "cycle": cycle, "function": lo}

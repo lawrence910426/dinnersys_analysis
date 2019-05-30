@@ -7,12 +7,15 @@ class booster:
     # input: neurons ,training parameters
     # output: neurons finished training
     param = {
-        "cycles": 10,
-        "limit": 10,
-        "threads": 1
+        "cycles": 20,
+        "limit": 20,
+        "threads": 10
     }
 
     def __init__(self, param=None):
+        if not (param is None):
+            booster.param = param
+
         self.task = queue.Queue()
         t = {}
         for i in range(self.param["threads"]):

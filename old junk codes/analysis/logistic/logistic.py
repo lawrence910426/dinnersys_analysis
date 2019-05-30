@@ -19,7 +19,8 @@ class logistic(train):
         dotted = x.dot(row_vector_w)
         sigmoided = self.u_sigmoid(dotted)
         row_vector_y = y.reshape((self.param.shape[0], 1))
-        return x.T.dot(row_vector_y - sigmoided).T[0]
+        grad = x.T.dot(row_vector_y - sigmoided).T[0]
+        return np.clip(grad ,-5 ,5)
 
     def psuedo_weight(self, item):
         return item
@@ -34,7 +35,7 @@ class logistic(train):
         return tmp
 
     def train(self, **kwargs):
-        self.alpha = 0.1 \
+        self.alpha = 2 \
             if kwargs.setdefault("alpha") is None else kwargs["alpha"]
         self.beta = 0.9 \
             if kwargs.setdefault("beta") is None else kwargs["beta"]
@@ -52,17 +53,16 @@ class logistic(train):
         getattr(self, function)(precision ,cycles ,output)
         self.trained = True
 
-    def query(self, value):
-        if self.trained:
-            tmp = self.weight.dot(self.psuedo_weight(value))
-            return self.sigmoid(tmp)
-        else:
-            return 0
+    def query(self, value ,psuedo=True):
+        if psuedo:
+            value = self.psuedo_weight(value)
+        tmp = value.dot(self.weight)
+        return self.sigmoid(tmp)
 
     def cost(self):
         summa = 0
         for i in range(len(self.param)):
-            tmp = logistic.sigmoid(self.weight.dot(self.param[i]))
+            tmp = self.query(self.param[i] ,False)
             if self.value[i] == 0:
                 summa += 0 if tmp == 1 else math.log(1 - tmp)
             if self.value[i] == 1:

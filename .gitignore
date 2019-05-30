@@ -1,0 +1,8 @@
+*.pyc
+__pycache__/
+models/
+logs/
+*.pickle
+*.cpython-36.pyc
+*pyc
+old junk codes/data.pickle

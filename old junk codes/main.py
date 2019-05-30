@@ -1,42 +1,47 @@
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 
 import os
 import pickle
 
-from internet_data.fetch_data import *
-
-from experiment.sum_trend import *
-from experiment.amount_figure import *
-from experiment.algorithm_compare import *
-from output.category_trend import *
-from output.prediction import *
-
 from analysis.logistic.logistic import *
+from datetime import datetime
+from datetime import timedelta
+from get_db_data.db_fetcher import data_fetcher
+from accuracy import accuracy
+from marker import marker
+from analysis.micro.booster import booster
+from analysis.micro.decision import decision
+import time
 
-amount_figure("2018-09-20", "2019-01-20" ,60 ,"data_local.pickle")
-# algorithm_compare()
+from tester import tester
 
-# fetch_data.download("data_local.pickle")
-# data = fetch_data.load("data_local.pickle", "2018-09-01", "2018-11-29")
+segment = [
+    ('2018-10-01', '2019-01-15')
+]
+for item in segment:
+    start, end, list, index = item[0], item[1], [], []
+    ostart, oend = datetime.strptime('2018-11-12', "%Y-%m-%d"), datetime.strptime('2018-12-21', "%Y-%m-%d")
+    while ostart != oend:
+        list.append(ostart.strftime("%Y-%m-%d"))
+        index.append(ostart)
+        ostart += timedelta(days=1)
 
-# analysiser = analysis(data, "exists")
+    mark = tester({
+        "cycles": 20,
+        "limit": 5,
+        "threads": 50
+    }, start, end, list)
+    is_trash = mark.is_trash()
+    print("Accuracy:")
+    print(np.sum(np.divide(np.abs(np.subtract(np.array(mark.real_value), np.array(mark.test_value))),
+                           np.array(mark.test_value))))
+    print("### Passed testing ###" if not is_trash else "Did not pass")
 
-# def callback(uid):
-#     print("done training")
-
-# booster = booster()
-# tmp = {
-#     "2018-09-01" :True,
-#     "2018-09-02" :None,
-#     "2018-09-03" :None,
-#     "2018-09-04" :True,
-#     "2018-09-05" :None,
-#     "2018-09-06" :None,
-#     "2018-09-07" :True,
-#     "2018-09-08" :None,
-#     "2018-09-09" :None
-# }
-# decision = decision(tmp ,3 ,1)
-# decision.train(booster ,callback)
+    # if not is_trash:
+    plt.figure(num='Predict', figsize=(10, 10))
+    plt.bar(index, mark.real_value)
+    plt.plot(index, mark.test_value, color='orange')
+    plt.show()

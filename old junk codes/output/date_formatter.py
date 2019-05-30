@@ -1,5 +1,4 @@
 import numpy as np
-from matplotlib.mlab import csv2rec
 import matplotlib.pyplot as plt
 import matplotlib.cbook as cbook
 from matplotlib.ticker import Formatter

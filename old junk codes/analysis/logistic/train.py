@@ -6,29 +6,53 @@ import pandas as pd
 
 class train:
     def train_raw(self, precision, cycles, output):
-        this = np.zeros((len(self.param[0])), dtype=np.float)
+        this = np.zeros((self.param.shape[1]), dtype=np.float)
         count = 0
         while True:
-           
+
             if output:
                 self.weight = this
                 self.log["cost"].append(self.cost())
                 self.log["deviation"].append(self.deviation(
                     self.fprime(self.param, self.value, this)))
                 self.log["gradient"].append(count)
-            
+
             slope = self.fprime(self.param, self.value, this)
             this = this + slope * self.alpha
 
             count += 1
-            
+
+            self.weight = this
             if ((not precision is None) and precision >= train.umax(self.fprime(self.param, self.value, this))) \
                     or ((not cycles is None) and count >= cycles):
                 break
-        self.weight = this
+
+    def train_adagrad(self, precision, cycles, output):
+        this = np.zeros((self.param.shape[1]), dtype=np.float)
+        count = 0
+        slope_sum = 1e-8
+        while True:
+
+            if output:
+                self.weight = this
+                self.log["cost"].append(self.cost())
+                self.log["deviation"].append(self.deviation(
+                    self.fprime(self.param, self.value, this)))
+                self.log["gradient"].append(count)
+
+            slope = self.fprime(self.param, self.value, this)
+            slope_sum += self.deviation(slope)
+            this = this + slope * self.alpha / math.sqrt(slope_sum)
+
+            count += 1
+
+            self.weight = this
+            if ((not precision is None) and precision >= train.umax(self.fprime(self.param, self.value, this))) \
+                    or ((not cycles is None) and count >= cycles):
+                break
 
     def train_ternary(self, precision, cycles, output):
-        this = np.zeros((len(self.param[0])), dtype=np.float)
+        this = np.zeros((self.param.shape[1]), dtype=np.float)
         count = 0
         while True:
             if output:
@@ -36,18 +60,18 @@ class train:
                 self.log["cost"].append(self.cost())
                 self.log["deviation"].append(self.deviation(
                     self.fprime(self.param, self.value, this)))
-                self.log["gradient"].append(3 * count * self.limit)
+                self.log["gradient"].append(2 * count * self.limit + 1)
 
             this = this + self.ternary(this)
             count += 1
 
+            self.weight = this
             if ((not precision is None) and precision >= train.umax(self.fprime(self.param, self.value, this))) \
                     or ((not cycles is None) and count >= cycles):
                 break
-        self.weight = this
 
     def train_momentum(self, precision, cycles, output):
-        prev = this = np.zeros((len(self.param[0])), dtype=np.float)
+        prev = this = np.zeros((self.param.shape[1]), dtype=np.float)
         count = 0
         while True:
             if output:
@@ -64,13 +88,13 @@ class train:
 
             count += 1
 
+            self.weight = this
             if ((not precision is None) and precision >= train.umax(self.fprime(self.param, self.value, this))) \
                     or ((not cycles is None) and count >= cycles):
                 break
-        self.weight = this
 
     def train_ternary_momentum(self, precision, cycles, output):
-        prev = this = np.zeros((len(self.param[0])), dtype=np.float)
+        prev = this = np.zeros((self.param.shape[1]), dtype=np.float)
         count = 0
         while True:
             if output:
@@ -85,10 +109,10 @@ class train:
             prev = tmp
             count += 1
 
+            self.weight = this
             if ((not precision is None) and precision >= train.umax(self.fprime(self.param, self.value, this))) \
                     or ((not cycles is None) and count >= cycles):
                 break
-        self.weight = this
 
     def ternary(self, prev):
         # This algorithm is a ternary search. Requires O(log N) time to run
@@ -114,6 +138,7 @@ class train:
                 best = rmid
             if self.deviation(lmid_value) == self.deviation(rmid_value):
                 # This is the limitation of the data type, so we break out.
+                a = self.deviation(lmid_value)
                 break
             # print(l, r, lmid ,rmid)
             # print(lmid_value ,rmid_value ,self.deviation(lmid_value), self.deviation(rmid_value))
@@ -138,9 +163,9 @@ class train:
         #         best_v = value
         # print(best, self.alpha[best])
         # return prev + origin * self.alpha[best]
-    
+
     @staticmethod
-    def umax(x):    # recursively get the maximum of a ndarray
+    def umax(x):  # recursively get the maximum of a ndarray
         if isinstance(x, np.float64) or isinstance(x, float):
             return abs(x)
         maxi = train.umax(x[0])

@@ -24,36 +24,18 @@ def algorithm_compare():
     value = [0, 0, 1, 1, 1, 0 ,1 ,1, 0 ,1]
 
     data = dict()
-    
+
     ############################################################################################
     lo = logistic(np.array(param, dtype=np.float64),
                   np.array(value, dtype=np.float64))
-    lo.train(alpha=16, cycles=1200, function="train_raw")
+    lo.train(alpha=0.1, cycles=200, function="train_adagrad")
     data["A"] = lo.log
     print(lo.cost())
 
     lo = logistic(np.array(param, dtype=np.float64),
                   np.array(value, dtype=np.float64))
-    lo.train(alpha=1, cycles=1200, function="train_raw")
+    lo.train(alpha=4, limit=10 ,cycles=20, function="train_ternary")
     data["B"] = lo.log
-    print(lo.cost())
-
-    lo = logistic(np.array(param, dtype=np.float64),
-                  np.array(value, dtype=np.float64))
-    lo.train(alpha=0.25, cycles=1200, function="train_raw")
-    data["C"] = lo.log
-    print(lo.cost())
-
-    lo = logistic(np.array(param, dtype=np.float64),
-                  np.array(value, dtype=np.float64))
-    lo.train(alpha=0.1, cycles=1200 ,function="train_raw")
-    data["D"] = lo.log
-    print(lo.cost())
-
-    lo = logistic(np.array(param, dtype=np.float64),
-                  np.array(value, dtype=np.float64))
-    lo.train(alpha=0.01, cycles=1200, function="train_raw")
-    data["E"] = lo.log
     print(lo.cost())
     ############################################################################################
 
@@ -61,11 +43,9 @@ def algorithm_compare():
     plt.xlabel('Partial differential executed times', fontsize=15)
     plt.ylabel('Cost function value', fontsize=15)
 
-    plt.plot(data["A"]["gradient"], data["A"]["cost"], label="A")
-    # plt.plot(data["B"]["gradient"], data["B"]["cost"], label="B")
-    plt.plot(data["C"]["gradient"], data["C"]["cost"], label="C")
-    plt.plot(data["D"]["gradient"], data["D"]["cost"], label="D")
-    plt.plot(data["E"]["gradient"], data["E"]["cost"], label="E")
+    plt.plot(data["A"]["gradient"], data["A"]["cost"], label="Adagrad alpha:0.1")
+    plt.plot(data["B"]["gradient"], data["B"]["cost"], label="Ternary alpha:4 precision:5")
+    plt.plot(data["C"]["gradient"], data["C"]["cost"], label="Momentum alpha:0.001 beta:0.9")
 
     plt.legend(prop={'size': 20})
     plt.show()
