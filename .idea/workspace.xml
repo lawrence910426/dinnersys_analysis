@@ -5,26 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ecf6877-36b8-4f67-94f4-7b9fb3c77f65" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/old junk codes/accuracy.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old junk codes/experiment/momentum_adagrad_ternary.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old junk codes/experiment/shockwave.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old junk codes/get_db_data/db_fetcher.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old junk codes/get_db_data/dinnersys.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old junk codes/marker.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old junk codes/old_main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old junk codes/tester.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/machine_learning/data.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/machine_learning/data.pickle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/machine_learning/genetic_algo.py" beforeDir="false" afterPath="$PROJECT_DIR$/machine_learning/genetic_algo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/old junk codes/analysis/logistic/logistic.py" beforeDir="false" afterPath="$PROJECT_DIR$/old junk codes/analysis/logistic/logistic.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/old junk codes/analysis/logistic/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/old junk codes/analysis/logistic/train.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/old junk codes/analysis/micro/booster.py" beforeDir="false" afterPath="$PROJECT_DIR$/old junk codes/analysis/micro/booster.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/old junk codes/analysis/micro/decision.py" beforeDir="false" afterPath="$PROJECT_DIR$/old junk codes/analysis/micro/decision.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/old junk codes/analysis/micro/neuron.py" beforeDir="false" afterPath="$PROJECT_DIR$/old junk codes/analysis/micro/neuron.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/old junk codes/data.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/old junk codes/data.pickle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/old junk codes/experiment/algorithm_compare.py" beforeDir="false" afterPath="$PROJECT_DIR$/old junk codes/experiment/algorithm_compare.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/old junk codes/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/old junk codes/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/old junk codes/output/date_formatter.py" beforeDir="false" afterPath="$PROJECT_DIR$/old junk codes/output/date_formatter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/~$旺宏科學獎.docx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/旺宏科學獎.docx" beforeDir="false" afterPath="$PROJECT_DIR$/旺宏科學獎.docx" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -35,11 +18,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/old junk codes/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="298">
-              <caret line="43" column="47" lean-forward="true" selection-start-line="43" selection-start-column="47" selection-end-line="43" selection-end-column="47" />
+            <state relative-caret-position="190">
+              <caret line="33" column="18" selection-start-line="33" selection-start-column="18" selection-end-line="33" selection-end-column="18" />
               <folding>
                 <element signature="e#0#24#0" expanded="true" />
               </folding>
@@ -81,7 +64,7 @@
         <entry file="file://$PROJECT_DIR$/old junk codes/marker.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="478">
-              <caret line="28" column="46" lean-forward="true" selection-start-line="28" selection-start-column="46" selection-end-line="28" selection-end-column="46" />
+              <caret line="28" column="46" selection-start-line="28" selection-start-column="46" selection-end-line="28" selection-end-column="46" />
               <folding>
                 <element signature="e#0#33#0" expanded="true" />
               </folding>
@@ -89,11 +72,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/old junk codes/get_db_data/dinnersys.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="267">
-              <caret line="82" column="67" selection-start-line="82" selection-start-column="67" selection-end-line="82" selection-end-column="67" />
+            <state relative-caret-position="177">
+              <caret line="86" column="69" selection-start-line="86" selection-start-column="69" selection-end-line="86" selection-end-column="69" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -381,7 +364,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4963119" visible="true" weight="0.4301192" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4963119" weight="0.4301192" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -684,13 +667,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/old junk codes/experiment/algorithm_compare.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="53" column="91" selection-start-line="53" selection-start-column="91" selection-end-line="53" selection-end-column="91" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Roaming/Python/Python36/site-packages/MySQLdb/connections.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="167">
@@ -718,7 +694,7 @@
     <entry file="file://$PROJECT_DIR$/old junk codes/marker.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="478">
-          <caret line="28" column="46" lean-forward="true" selection-start-line="28" selection-start-column="46" selection-end-line="28" selection-end-column="46" />
+          <caret line="28" column="46" selection-start-line="28" selection-start-column="46" selection-end-line="28" selection-end-column="46" />
           <folding>
             <element signature="e#0#33#0" expanded="true" />
           </folding>
@@ -735,6 +711,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/old junk codes/experiment/algorithm_compare.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="663">
+          <caret line="51" lean-forward="true" selection-start-line="51" selection-end-line="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/old junk codes/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="33" column="18" selection-start-line="33" selection-start-column="18" selection-end-line="33" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#24#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/old junk codes/analysis/logistic/logistic.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-188">
@@ -744,20 +737,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/old junk codes/get_db_data/dinnersys.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="82" column="67" selection-start-line="82" selection-start-column="67" selection-end-line="82" selection-end-column="67" />
+        <state relative-caret-position="177">
+          <caret line="86" column="69" selection-start-line="86" selection-start-column="69" selection-end-line="86" selection-end-column="69" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/old junk codes/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="43" column="47" lean-forward="true" selection-start-line="43" selection-start-column="47" selection-end-line="43" selection-end-column="47" />
-          <folding>
-            <element signature="e#0#24#0" expanded="true" />
           </folding>
         </state>
       </provider>
