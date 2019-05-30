@@ -35,9 +35,11 @@ for item in segment:
         "threads": 50
     }, start, end, list)
     is_trash = mark.is_trash()
-    print("Accuracy:")
-    print(np.sum(np.divide(np.abs(np.subtract(np.array(mark.real_value), np.array(mark.test_value))),
-                           np.array(mark.test_value))))
+
+    sum = 0
+    for i in range(len(mark.real_value)):
+        sum += np.abs(mark.real_value[i] - mark.test_value[i]) / mark.test_value[i]
+    print("Miss: {}".format(sum / len(mark.real_value)))
     print("### Passed testing ###" if not is_trash else "Did not pass")
 
     # if not is_trash:
