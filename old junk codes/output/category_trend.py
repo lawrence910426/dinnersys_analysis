@@ -12,14 +12,14 @@ def category_trend(orders):
     result = analysiser.get_dish_date()
     date, dish = analysiser.get_decoders()
     dates = len(date)
-    balance = analysiser.get_balance(type="day_avg")
+    # balance = analysiser.get_balance(type="day_avg")
 
     for did in dish:
         index = [parse(date[date_id]) for date_id in date]
 
-        value = [result[date_id, did] for date_id in date]
+        value = [sum(result[date_id, d] for d in dish) for date_id in date]
 
-        balance_value = [balance[date_id, did] for date_id in date]
+        # balance_value = [balance[date_id, did] for date_id in date]
 
         formatter = date_format(index)
         fig, ax = plt.subplots()
@@ -28,9 +28,10 @@ def category_trend(orders):
         fig.autofmt_xdate()
 
         plt.bar(range(dates), value ,label="Original data")
-        plt.plot(range(dates), balance_value, 'C1',
-                 label='Stable state', marker='o')
-        fig.suptitle(dish[did])
+        # plt.plot(range(dates), balance_value, 'C1',
+        #        label='Stable state', marker='o')
+        fig.suptitle("History Data")
 
         plt.legend()
         plt.show()
+        break

@@ -9,18 +9,17 @@ import json
 
 
 class fetch_data:
-    server_dns = "http://dinnersystem.ddns.net/"
+    server_dns = "http://dinnersystem.com/"
 
     def __init__(self):
         self.cookie = self.login()
 
     def login(self):
-        link = self.server_dns + "dinnersys_beta/backend/backend.php?cmd=login&id=dinnersys&password=2rjurrru&device_id=analysiser"
+        link = self.server_dns + "dinnersys_beta/backend/backend.php?cmd=login&id=dinnersys&password=sc2rjurrru&device_id=analysiser"
         
         session = requests.Session()
         resp = session.get(link)
         resp_text = remove_bom(resp.text)
-        print(resp_text)
 
         return session.cookies.get_dict()
 
